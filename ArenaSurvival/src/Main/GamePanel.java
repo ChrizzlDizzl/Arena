@@ -22,7 +22,7 @@ public class GamePanel extends JPanel
 		{
 			public void keyReleased (KeyEvent e)
 			{
-				joystick.keyHappened(e.getKeyChar(), player);
+				joystick.keyHappened(e.getKeyCode(), player);
                                
                                 
 			}

@@ -26,7 +26,7 @@ public class Joystick extends Drawable
 	
 	
 	
-	public void keyHappened (char key, Player p)
+	public void keyHappened (int key, Player p)
 	{
 		isVisible = true;
 		//SHOULD CHANGE LOOK HERE!!!!!!!!!!!!!!
@@ -44,18 +44,18 @@ public class Joystick extends Drawable
 			p.crouch();
                         System.out.println("crouch");
 		}							 	
-		//if (key == KeyEvent.VK_A)
-		//{
+		if (key == KeyEvent.VK_A)
+		{
 			if (p.getPosX() - p.getMoveLength() >= 0)
 			  {
-				  p.move("RIGHT"); 	//CAN BE CONSTANT LATER 
+				  p.move("LEFT"); 	//CAN BE CONSTANT LATER 
 			  }	
-		//}
+		}
 		if (key == KeyEvent.VK_D)
 		{
 			if (p.getPosX() + p.getMoveLength() <= screenWidth)
 			  {
-				  p.move("LEFT");  //CAN BE CONSTANT LATER
+				  p.move("RIGHT");  //CAN BE CONSTANT LATER
 			  }	
 		}	
 	}
