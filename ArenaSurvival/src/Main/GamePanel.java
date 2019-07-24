@@ -13,8 +13,10 @@ public class GamePanel extends JPanel
 	private LinkedList <Drawable> stuffToPaint;			
 	public GamePanel (LinkedList drawables)
 	{				
-		//SHOULD BE CHANGED LATER ////////////////////////////
 		
+                
+                //SHOULD BE CHANGED LATER ////////////////////////////
+		this.requestFocus();
                 Joystick joystick = (Joystick)drawables.get(1);
 		Player player = (Player)drawables.get(0);
 		
@@ -27,6 +29,7 @@ public class GamePanel extends JPanel
                                 
 			}
 		});
+                
 				
 		
 		//requestFocusInWindow(); //DOESNT GET FOCUSED 
@@ -35,7 +38,8 @@ public class GamePanel extends JPanel
 		stuffToPaint = drawables;
 		
 		this.setVisible(true);
-                this.setFocusable(true);
+                
+             
 	}
 	
 	@Override
@@ -53,6 +57,7 @@ public class GamePanel extends JPanel
 			g.fillRect(d.getPosX(), d.getPosY(), d.getWidth(), d.getHeight());
                         
 		}
+                this.requestFocus();
 		
 	}
 	

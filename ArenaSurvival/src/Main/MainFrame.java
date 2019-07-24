@@ -48,7 +48,7 @@ public class MainFrame extends JFrame
 		this.add(cPanel);	//add CardLayoutPanel to Frame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		this.setVisible(true);
-                this.setFocusable(false);
+                
 	}
 	
 	public void changePanelTo (String panelName) 
@@ -59,6 +59,7 @@ public class MainFrame extends JFrame
 		}
 		cLayout.show(cPanel, panelName);
 		activeCardName = panelName;
+                
 	}
         
 	

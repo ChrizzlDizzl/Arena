@@ -22,6 +22,7 @@ public class MenuPanel extends JPanel
 	
 	public MenuPanel (MainFrame mFrame) 
 	{
+               
 		mainFrame = mFrame;
 		this.setBackground(background);
 		
@@ -31,7 +32,7 @@ public class MenuPanel extends JPanel
 		this.add((Component) buttons.getFirst());
 		
 		this.setVisible(true);
-                this.setFocusable(false);
+                
 	}
 	
 	private void initButtons() //TO ADD BUTTONS TO LIST
@@ -44,7 +45,9 @@ public class MenuPanel extends JPanel
 		{
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				mainFrame.changePanelTo(MainFrame.GAME_PANEL);		
+				mainFrame.changePanelTo(MainFrame.GAME_PANEL);
+                                setFocusable(false);
+                                
 			}
 			
 		});
