@@ -12,9 +12,8 @@ public class Joystick extends Drawable
 	private Boolean isVisible;
 	private int screenWidth;
 	
-	public Joystick(int x, int y, int h, int w, Color c, int sW) {
+	public Joystick(int x, int y, int h, int w, Color c) {
 		super(x, y, h, w, c);
-		screenWidth = sW;
 		isVisible = false;
 	}
 	
@@ -23,15 +22,11 @@ public class Joystick extends Drawable
 		return isVisible;
 	}
 	
-	
-	
-	
-	public void keyHappened (char key, Player p)
+	public void keyHappened (int key, Player p)
 	{
 		isVisible = true;
 		//SHOULD CHANGE LOOK HERE!!!!!!!!!!!!!!
 		
-		System.out.println (key);
 		if (key == KeyEvent.VK_W)
 		{
 			if (!p.isJumping())
@@ -47,15 +42,20 @@ public class Joystick extends Drawable
 		{
 			if (p.getPosX() - p.getMoveLength() >= 0)
 			  {
-				  p.move("RIGHT"); 	//CAN BE CONSTANT LATER 
+				  p.move("LEFT"); 	//CAN BE CONSTANT LATER 
 			  }	
 		}
 		if (key == KeyEvent.VK_D)
 		{
 			if (p.getPosX() + p.getMoveLength() <= screenWidth)
 			  {
-				  p.move("LEFT");  //CAN BE CONSTANT LATER
+				  p.move("RIGHT");  //CAN BE CONSTANT LATER
 			  }	
 		}	
+	}
+	
+	public void setScreenWidth(int width)
+	{
+		screenWidth = width;
 	}
 }

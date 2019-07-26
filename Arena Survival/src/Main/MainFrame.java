@@ -31,8 +31,9 @@ public class MainFrame extends JFrame
 		
 		initDrawables();
 		
-		gPanel = new GamePanel(drawables);	//init Panels
+			//init Panels
 		mPanel = new MenuPanel(this);
+                gPanel = new GamePanel(drawables);
 						
 		cards = new HashMap <String, JPanel> ();	//FOR SAVING ACTIVE
 		cards.put(GAME_PANEL, gPanel);
@@ -47,6 +48,7 @@ public class MainFrame extends JFrame
 		this.add(cPanel);	//add CardLayoutPanel to Frame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		this.setVisible(true);
+                
 	}
 	
 	public void changePanelTo (String panelName) 
@@ -55,27 +57,45 @@ public class MainFrame extends JFrame
 		{
 			return;
 		}
+		JPanel oldPanel = (JPanel)cards.get(activeCardName);
+		oldPanel.setFocusable(false);
+		
+		JPanel newPanel = (JPanel)cards.get(panelName);
+		newPanel.setFocusable(true);
+		newPanel.requestFocus();
+		
 		cLayout.show(cPanel, panelName);
 		activeCardName = panelName;
+                
 	}
+        
 	
 	public void timerTick ()
 	{
-		JPanel temp = (JPanel) cards.get(activeCardName);
-		temp.repaint();
+		Joystick tempJoystick = (Joystick)drawables.get(1);
+		tempJoystick.setScreenWidth(this.getWidth());
+		JPanel tempPanel = (JPanel) cards.get(activeCardName);
+		tempPanel.repaint();
 	}
 	
 	private void initDrawables () //CREATES DRAWABLES AND LOADS IMAGES
 	{
 		drawables = new LinkedList <Drawable>();
 		
-		Player player = new Player (5,10, 100, 100, Color.GREEN);
-		Joystick joystick = new Joystick (500, 500, 100, 100, Color.BLACK, this.getWidth());
-		
+		Player player = new Player (120, 50, 100, 100, Color.GREEN);
+		Joystick joystick = new Joystick (500, 500, 100, 100, Color.BLACK);
 		
 		drawables.add(0, player);	//TO FIND IT LATER
 		drawables.add(1, joystick); //SO YOU CAN FIND IT LATER
 		
 		//EVENTS SHOULD BE ADDED TOO LATER
+	}
+	
+	private class EventLoader //SHOULD LOAD ALL THE DATA FOR EVENTS LATER
+	{
+		public EventLoader()
+		{
+
+		}
 	}
 }

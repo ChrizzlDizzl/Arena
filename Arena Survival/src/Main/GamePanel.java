@@ -10,29 +10,24 @@ import javax.swing.*;
 
 public class GamePanel extends JPanel
 {
-	private LinkedList <Drawable> stuffToPaint;			
+	private LinkedList <Drawable> stuffToPaint;	
+	private Platform platform;
+	
 	public GamePanel (LinkedList drawables)
-	{				
-		//SHOULD BE CHANGED LATER ////////////////////////////
-		Joystick joystick = (Joystick)drawables.get(1);
+	{				               
+        //SHOULD BE CHANGED LATER ////////////////////////////
+        Joystick joystick = (Joystick)drawables.get(1);
 		Player player = (Player)drawables.get(0);
 		
 		this.addKeyListener(new KeyAdapter ()
 		{
 			public void keyReleased (KeyEvent e)
 			{
-				joystick.keyHappened(e.getKeyChar(), player);				
+				joystick.keyHappened(e.getKeyCode(), player);                 
 			}
-		});
-				
-		this.setFocusable(true);
-		this.requestFocus();
-		//requestFocusInWindow(); //DOESNT GET FOCUSED 
-		///////////////////////////////////////////
-		
+		});                		
 		stuffToPaint = drawables;
-		
-		this.setVisible(true);
+		this.setVisible(true);      
 	}
 	
 	@Override
@@ -47,14 +42,15 @@ public class GamePanel extends JPanel
 			//g.drawImage(d.getImage(), (int)d.getPosX(), (int)d.getPosY(), 
 			//			d.getWidth(), d.getHeight(), d.getColor(), null);
 			g.setColor(d.getColor());
-			g.fillRect(d.getPosX(), d.getPosY(), d.getWidth(), d.getHeight());
+			g.fillRect(d.getPosX(), d.getPosY(), d.getWidth(), d.getHeight());                       
 		}
-		
+		platform = new Platform (0, (int)(this.getHeight() * 0.66), this.getWidth(), 100, Color.WHITE);
+		platform.draw(g);
 	}
 	
 	private void drawBackground (Graphics g)
 	{
-		g.setColor(Color.WHITE);
+		g.setColor(Color.BLACK);
 		g.fillRect (0, 0, getWidth(), getHeight());
 		
 		/*BACKGROUND SHOULD BE A DRAWABLE TOO
@@ -67,5 +63,35 @@ public class GamePanel extends JPanel
 	{
 		//ADDED LATER, LOADS BUFFERED IMAGE
 		
+	}
+
+	public Platform getPlatform()
+	{
+		return platform;
+	}
+	
+	private class Platform extends Drawable
+	{
+		private Rectangle plat;
+		public Platform(int x, int y, int w, int h, Color c) {
+			super(x, y, w, h, c);
+			plat = new Rectangle (x, y, w, h);
+		}
+		
+		public Rectangle getHitbox()
+		{
+			return plat;
+		}
+		
+		public Boolean checkTouch(Rectangle r)
+		{
+			return(plat.intersects(r));
+		}
+		
+		public void draw(Graphics g)
+		{
+			g.setColor(this.getColor());
+			g.fillRect(posX, posY, width, height);
+		}
 	}
 }
