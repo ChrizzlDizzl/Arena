@@ -2,6 +2,7 @@ package Main;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 public abstract class Drawable 
@@ -10,10 +11,11 @@ public abstract class Drawable
 	protected Color color;
 	protected BufferedImage image;
 	protected int posX, posY;
+      
 	
 	//YOU GIVE THE PARAMETERS TO SET SOME PROPERTIES
 	
-	public Drawable(int x, int y, int h, int w, Color c)
+	public Drawable(int x, int y, int w, int h, Color c)
 	{
 		height = h;
 		width = w;
@@ -54,6 +56,11 @@ public abstract class Drawable
 	public int getPosY ()
 	{
 		return posY;
+	}
+	
+	public Rectangle getRectangle ()
+	{
+		return new Rectangle (posX, posY, width, height);
 	}
 	
 	protected void loadImage() //USED TO LOAD BUFFEREDIMAGE & GIVES RIGHT WIDTH/HEIGHT

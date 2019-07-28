@@ -14,6 +14,8 @@ public class MainFrame extends JFrame
 	
 	private LinkedList drawables;
 	
+        private CollisionManager collisions;
+        
 	private GamePanel gPanel;
 	private MenuPanel mPanel;
 	
@@ -28,10 +30,11 @@ public class MainFrame extends JFrame
 		
 		cLayout = new CardLayout(0, 0);	//init CardLayout
 		cPanel = new JPanel (cLayout); //init CardLayoutPanel
+		collisions = new CollisionManager();
 		
 		initDrawables();
-		
 			//init Panels
+                
 		mPanel = new MenuPanel(this);
                 gPanel = new GamePanel(drawables);
 						
@@ -49,6 +52,7 @@ public class MainFrame extends JFrame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		this.setVisible(true);
                 
+                collisions.start();
 	}
 	
 	public void changePanelTo (String panelName) 
@@ -57,29 +61,69 @@ public class MainFrame extends JFrame
 		{
 			return;
 		}
+		JPanel oldPanel = (JPanel)cards.get(activeCardName);
+		oldPanel.setFocusable(false);
+		
+		JPanel newPanel = (JPanel)cards.get(panelName);
+		newPanel.setFocusable(true);
+		
+		
 		cLayout.show(cPanel, panelName);
 		activeCardName = panelName;
+                newPanel.requestFocus();
                 
 	}
         
 	
 	public void timerTick ()
 	{
-		JPanel temp = (JPanel) cards.get(activeCardName);
-		temp.repaint();
+		Joystick tempJoystick = (Joystick)drawables.get(1);
+		tempJoystick.setScreenWidth(this.getWidth());
+		JPanel tempPanel = (JPanel) cards.get(activeCardName);
+		tempPanel.repaint();
+                
 	}
 	
 	private void initDrawables () //CREATES DRAWABLES AND LOADS IMAGES
 	{
 		drawables = new LinkedList <Drawable>();
 		
-		Player player = new Player (5,10, 100, 100, Color.GREEN);
-		Joystick joystick = new Joystick (500, 500, 100, 100, Color.BLACK, this.getWidth());
-		
+		Player player = new Player (900, 570, 100, 100, Color.GREEN);
+		Joystick joystick = new Joystick (500, 500, 100, 100, Color.BLACK);
+               
 		
 		drawables.add(0, player);	//TO FIND IT LATER
 		drawables.add(1, joystick); //SO YOU CAN FIND IT LATER
 		
 		//EVENTS SHOULD BE ADDED TOO LATER
 	}
+	
+	private class EventLoader //SHOULD LOAD ALL THE DATA FOR EVENTS LATER
+	{
+		public EventLoader()
+		{
+
+		}
+	}
+        
+        private Rectangle getPlatformHB(){          
+               return gPanel.getPlatformHitbox();
+        }
+        private Player getPlayer(){
+               return (Player) drawables.get(0);
+        }
+        private class CollisionManager extends Thread{
+            
+            public void run() {
+                if(getPlayer().checkTouch(getPlatformHB()) == true){ // Fehler weil vielleicht weil Player kein Player sondern Drawable ist?
+                    getPlayer().fallDown();
+                }
+                int delay = 4;
+                try {
+                    Thread.sleep(delay);
+                } catch (Exception e) {
+
+                }
+            }
+        }
 }

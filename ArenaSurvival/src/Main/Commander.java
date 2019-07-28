@@ -1,5 +1,6 @@
 package Main;
 
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
@@ -7,12 +8,13 @@ import javax.swing.Timer;
 public class Commander 
 {
         
-	private final static int TIMER_DELAY = 1000;  // 1 second to test
+	private final static int TIMER_DELAY = 4;  // 1 second to test
 	private static Timer mainTimer = new Timer(TIMER_DELAY, new ActionListener()
 	{
 		public void actionPerformed (ActionEvent e)
 		{
 			timerTick();
+                       
 		}
 	});
 	
@@ -32,4 +34,5 @@ public class Commander
                 
 		// should later run the game and repaint								// from here
 	}
+        
 }
