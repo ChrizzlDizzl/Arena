@@ -15,13 +15,15 @@ public class GamePanel extends JPanel
 	
 	public GamePanel (LinkedList drawables)
 	{				               
+		platform = new Platform (0, 0, 0, 0, Color.WHITE);
+		
         //SHOULD BE CHANGED LATER ////////////////////////////
         Joystick joystick = (Joystick)drawables.get(1);
 		Player player = (Player)drawables.get(0);
 		
 		this.addKeyListener(new KeyAdapter ()
 		{
-			public void keyReleased (KeyEvent e)
+			public void keyPressed (KeyEvent e)
 			{
 				joystick.keyHappened(e.getKeyCode(), player);                 
 			}
@@ -32,8 +34,8 @@ public class GamePanel extends JPanel
 	
 	@Override
 	public void paintComponent(Graphics g)
-	{
-		initImages();
+	{	
+        initImages();
 		drawBackground(g);
 		
 		for(Drawable d : stuffToPaint)
@@ -44,9 +46,18 @@ public class GamePanel extends JPanel
 			g.setColor(d.getColor());
 			g.fillRect(d.getPosX(), d.getPosY(), d.getWidth(), d.getHeight());                       
 		}
-		platform = new Platform (0, (int)(this.getHeight() * 0.66), this.getWidth(), 100, Color.WHITE);
+		platform.setSize(new Rectangle(0, (int)(this.getHeight() * 0.66), this.getWidth(), 100));
 		platform.draw(g);
 	}
+	
+    public Rectangle getPlatformHitbox()
+    {
+    	System.out.println (platform.getRectangle());
+    	if(platform != null){  
+    		return platform.getRectangle();
+    	}
+    	return null;
+    }
 	
 	private void drawBackground (Graphics g)
 	{
@@ -65,10 +76,6 @@ public class GamePanel extends JPanel
 		
 	}
 
-	public Platform getPlatform()
-	{
-		return platform;
-	}
 	
 	private class Platform extends Drawable
 	{
@@ -86,6 +93,15 @@ public class GamePanel extends JPanel
 		public Boolean checkTouch(Rectangle r)
 		{
 			return(plat.intersects(r));
+		}
+		
+		public void setSize(Rectangle r)
+		{
+			plat = r;
+			posX = r.x;
+			posY = r.y;
+			width = r.width;
+			height = r.height;			
 		}
 		
 		public void draw(Graphics g)

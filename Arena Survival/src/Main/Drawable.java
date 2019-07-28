@@ -11,6 +11,7 @@ public abstract class Drawable
 	protected Color color;
 	protected BufferedImage image;
 	protected int posX, posY;
+      
 	
 	//YOU GIVE THE PARAMETERS TO SET SOME PROPERTIES
 	

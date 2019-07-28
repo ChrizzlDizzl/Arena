@@ -14,6 +14,8 @@ public class MainFrame extends JFrame
 	
 	private LinkedList drawables;
 	
+    private CollisionManager collisions;
+        
 	private GamePanel gPanel;
 	private MenuPanel mPanel;
 	
@@ -27,13 +29,12 @@ public class MainFrame extends JFrame
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH); //MAYBE LATER CONSTANT SIZE
 		
 		cLayout = new CardLayout(0, 0);	//init CardLayout
-		cPanel = new JPanel (cLayout); //init CardLayoutPanel
+		cPanel = new JPanel (cLayout); //init CardLayoutPanel		
 		
-		initDrawables();
-		
-			//init Panels
+		initDrawables();			//init Panels
+                
 		mPanel = new MenuPanel(this);
-                gPanel = new GamePanel(drawables);
+        gPanel = new GamePanel(drawables);
 						
 		cards = new HashMap <String, JPanel> ();	//FOR SAVING ACTIVE
 		cards.put(GAME_PANEL, gPanel);
@@ -44,11 +45,12 @@ public class MainFrame extends JFrame
 				
 		cLayout.show(cPanel, MENU_PANEL); 
 		activeCardName = MENU_PANEL;
+		
+		collisions = new CollisionManager();
 
 		this.add(cPanel);	//add CardLayoutPanel to Frame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
-		this.setVisible(true);
-                
+		this.setVisible(true);               
 	}
 	
 	public void changePanelTo (String panelName) 
@@ -62,13 +64,32 @@ public class MainFrame extends JFrame
 		
 		JPanel newPanel = (JPanel)cards.get(panelName);
 		newPanel.setFocusable(true);
-		newPanel.requestFocus();
+		
+		if (panelName == GAME_PANEL && !collisions.isAlive())
+		{
+			System.out.println ("COLLISIONS START");
+			collisions.start();
+		}else if (panelName != GAME_PANEL && collisions.isAlive())
+		{
+			 try 
+	            {
+				 System.out.println("COLLISIONS WAIT");
+				 collisions.wait();
+	            } catch (Exception e) 
+	            {
+
+	            }
+			
+		}else if (panelName == GAME_PANEL && collisions.isAlive())
+		{
+			System.out.println ("COLLISIONS START AGAIN");
+			collisions.notify();
+		}
 		
 		cLayout.show(cPanel, panelName);
 		activeCardName = panelName;
-                
-	}
-        
+        newPanel.requestFocus();              
+	}        
 	
 	public void timerTick ()
 	{
@@ -76,26 +97,42 @@ public class MainFrame extends JFrame
 		tempJoystick.setScreenWidth(this.getWidth());
 		JPanel tempPanel = (JPanel) cards.get(activeCardName);
 		tempPanel.repaint();
+                
 	}
 	
 	private void initDrawables () //CREATES DRAWABLES AND LOADS IMAGES
 	{
 		drawables = new LinkedList <Drawable>();
 		
-		Player player = new Player (120, 50, 100, 100, Color.GREEN);
-		Joystick joystick = new Joystick (500, 500, 100, 100, Color.BLACK);
+		Player player = new Player (900, 570, 100, 100, Color.GREEN);
+		Joystick joystick = new Joystick (1200, 900, 100, 100, Color.YELLOW);
+               
 		
 		drawables.add(0, player);	//TO FIND IT LATER
 		drawables.add(1, joystick); //SO YOU CAN FIND IT LATER
 		
 		//EVENTS SHOULD BE ADDED TOO LATER
 	}
-	
-	private class EventLoader //SHOULD LOAD ALL THE DATA FOR EVENTS LATER
-	{
-		public EventLoader()
-		{
+        
+    private class CollisionManager extends Thread{
+        private Player player = (Player) drawables.get(0);
+        	
+        public void run() 
+        {
+            if(player.checkTouch(gPanel.getPlatformHitbox()) == true)
+            {
+            	System.out.println ("IS FALLING");
+                player.fallDown();
+            }
+            int delay = 4;
+            try 
+            {
+                Thread.sleep(delay);
+                System.out.println (" --- PAUSE IN COLLISION THREAD ---");
+            } catch (Exception e) 
+            {
 
-		}
-	}
+            }
+        }
+    }
 }

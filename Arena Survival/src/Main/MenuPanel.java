@@ -46,6 +46,7 @@ public class MenuPanel extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				mainFrame.changePanelTo(MainFrame.GAME_PANEL);
+                                
                                 setFocusable(false);
                                 
 			}
