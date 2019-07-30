@@ -22,11 +22,31 @@ public class Joystick extends Drawable
 		return isVisible;
 	}
 	
-	public void keyHappened (int key, Player p)
+	public void changeDirection (int key, Player p)
 	{
 		isVisible = true;
+		//SHOULD CHANGE LOOK HERE!!!!!!!!!!!!!!							 	
+		if (key == KeyEvent.VK_A)
+		{
+			if (p.getPosX() - p.getMoveLength() >= 0)
+			  {
+				  p.changeDirection("LEFT"); 	//CAN BE CONSTANT LATER 
+			  }	
+		}
+		if (key == KeyEvent.VK_D)
+		{
+			if (p.getPosX() + p.getMoveLength() <= screenWidth)
+			  {
+				  p.changeDirection("RIGHT");  //CAN BE CONSTANT LATER
+			  }	
+		}	
+	}
+        public void doJumpCrouch(int key, Player p){
+                isVisible = true;
 		//SHOULD CHANGE LOOK HERE!!!!!!!!!!!!!!
-		
+		if(key == KeyEvent.VK_A || key == KeyEvent.VK_D ){
+                    p.changeDirection("STAY");
+                }
 		if (key == KeyEvent.VK_W)
 		{
 			if (!p.isJumping())
@@ -34,25 +54,12 @@ public class Joystick extends Drawable
 				  p.jump();
 			  }		
 		}
-		if (key == KeyEvent.VK_S) 
+                if (key == KeyEvent.VK_S) 
 		{
 			p.crouch();
-		}							 	
-		if (key == KeyEvent.VK_A)
-		{
-			if (p.getPosX() - p.getMoveLength() >= 0)
-			  {
-				  p.move("LEFT"); 	//CAN BE CONSTANT LATER 
-			  }	
 		}
-		if (key == KeyEvent.VK_D)
-		{
-			if (p.getPosX() + p.getMoveLength() <= screenWidth)
-			  {
-				  p.move("RIGHT");  //CAN BE CONSTANT LATER
-			  }	
-		}	
-	}
+                
+        }
 	
 	public void setScreenWidth(int width)
 	{

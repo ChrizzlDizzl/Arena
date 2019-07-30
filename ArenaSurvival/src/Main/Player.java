@@ -8,19 +8,20 @@ public class Player extends Drawable {
 
     //STATS FOR PLAYER	
     private int hp = 3;
-    private int moveLength;
+    private int moveLength, dropSpeed;
     private boolean jumping; //SO PERSON CANT JUMP MORE THAN 1 TIME WHILE IN AIR
-    private Rectangle hitbox;
+    private String direction; 
 
     public Player(int x, int y, int h, int w, Color c) {   
         super(x, y, h, w, c);
         moveLength = 10; //FOR TESTING
-        jumping = false;
-        hitbox = new Rectangle(x, y, w, h);
+        direction = "STAY";
+        dropSpeed = 2;
+        jumping = false;        
     }
 
     /////////////MOVE METHODE
-    public void move(String direction) //
+    public void move() //
     {
         if (direction == "LEFT") {
             posX -= moveLength;
@@ -30,20 +31,27 @@ public class Player extends Drawable {
             posX += moveLength;
             System.out.println("MOVEMENTSYSTEM UEBERPRUEFUNG: " + "RIGHT");
         }
+        if(direction == "STAY") {
+            System.out.println("MOVEMENTSYSTEM UEBERPRUEFUNG: " + "STAY");
+        }
     }
 
     public void jump() {
-       if(jumping == false){
-        Jump jump = new Jump();
-        jump.start();
+       if (!jumping)
+       {
+           Jump jump = new Jump();
+           jump.start();
        }
+    }
+    public void changeDirection(String pDirection){
+        direction = pDirection;
     }
 
     public void crouch() {
         System.out.println("MOVEMENTSYSTEM UEBERPRUEFUNG: " + "CROUCH");
     }
     public void fallDown(){
-        posY++;
+        posY += dropSpeed;
     }
 
     public int getMoveLength() {
@@ -55,7 +63,7 @@ public class Player extends Drawable {
     }
 
     public Boolean checkTouch(Rectangle other) {   
-        return (hitbox.intersects(other));     
+        return (this.getRectangle().intersects(other));     
     }
   
 
@@ -67,13 +75,13 @@ public class Player extends Drawable {
         private int sprungHoehe;
         private int anfangY;
 
-        public boolean heldÜberHindernis;
+        public boolean heldUeberHindernis;
         private int zwischenY;
 
         public Jump() {
             jumping = true;
             anfangY = posY;
-            sprungHoehe = 180;
+            sprungHoehe = 300;
                     //+ (anfangY - posY);
             System.out.println("MOVEMENTSYSTEM UEBERPRUEFUNG: " + "SPRING");
             
@@ -81,16 +89,15 @@ public class Player extends Drawable {
 
         public void run() {
 
-            int delay = 4;
+            int delay = 3;
             fertig = false;
           //  posY -= 2;
             while (fertig != true) {
 
-                //  if (derHeld.direktÜberHindernis() == true) {
+                //  if (derHeld.direktUeberHindernis() == true) {
                 //      fertig = true;
                 //  } else {
                 springen();
-                System.out.println("springt");
                 //   }
 
                 try {
@@ -113,26 +120,20 @@ public class Player extends Drawable {
           //  }
             if (hochpunktErreicht == false) {
                 
-                posY--;
+                posY -= dropSpeed;
             }
             if (posY == (anfangY - sprungHoehe)) {
                 hochpunktErreicht = true;
             }
             if (hochpunktErreicht == true && posY <= anfangY) {
                 
-                posY++;
+                posY += dropSpeed;
                 if (posY == anfangY) {
 
                     fertig = true;
 
                 }
             }
-
         }
-
-    }
-
-   
-
+    }   
 }
-

@@ -2,6 +2,8 @@ package Main;
 
 
 import java.awt.event.ActionEvent;
+import java.io.*;
+import java.net.URL;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
@@ -33,6 +35,19 @@ public class Commander
 		mFrame.timerTick();
                 
 		// should later run the game and repaint								// from here
+	}
+	
+	private class EventLoader //SHOULD LOAD ALL THE DATA FOR EVENTS LATER
+	{
+		InputStream inputStream;
+		URL url = getClass().getResource("EventData.txt");
+		File eventData = new File (url.getPath());
+		
+		public EventLoader()
+		{
+
+			
+		}
 	}
         
 }
