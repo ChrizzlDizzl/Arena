@@ -25,7 +25,8 @@ public class GamePanel extends JPanel
 		{
 			public void keyPressed (KeyEvent e)
 			{
-				joystick.changeDirection(e.getKeyCode(), player);                 
+				joystick.changeDirection(e.getKeyCode(), player);  
+                                
 			}
                         public void keyReleased (KeyEvent e)
                         {

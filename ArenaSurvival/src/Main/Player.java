@@ -14,9 +14,9 @@ public class Player extends Drawable {
 
     public Player(int x, int y, int h, int w, Color c) {   
         super(x, y, h, w, c);
-        moveLength = 10; //FOR TESTING
+        moveLength = 6; //FOR TESTING
         direction = "STAY";
-        dropSpeed = 2;
+        dropSpeed = 3;
         jumping = false;        
     }
 
@@ -89,7 +89,7 @@ public class Player extends Drawable {
 
         public void run() {
 
-            int delay = 3;
+            int delay = 4;
             fertig = false;
           //  posY -= 2;
             while (fertig != true) {
@@ -121,6 +121,7 @@ public class Player extends Drawable {
             if (hochpunktErreicht == false) {
                 
                 posY -= dropSpeed;
+                
             }
             if (posY == (anfangY - sprungHoehe)) {
                 hochpunktErreicht = true;

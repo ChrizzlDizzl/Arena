@@ -1,7 +1,7 @@
 package Main;
 
 import java.awt.Color;
-import java.awt.Rectangle;
+
 
 public abstract class Event extends Drawable
 {

@@ -14,7 +14,7 @@ public class MainFrame extends JFrame
 	
 	private LinkedList drawables;
         
-	private Player player;
+	//private Player player;
         private CollisionManager collisions;
         
 	private GamePanel gPanel;
@@ -48,7 +48,7 @@ public class MainFrame extends JFrame
 		activeCardName = MENU_PANEL;
 		
 		collisions = new CollisionManager();
-                player = (Player) drawables.get(0);
+              //  player = (Player) drawables.get(0);
 		this.add(cPanel);	//add CardLayoutPanel to Frame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		this.setVisible(true);               
@@ -98,7 +98,7 @@ public class MainFrame extends JFrame
 		tempJoystick.setScreenWidth(this.getWidth());
 		JPanel tempPanel = (JPanel) cards.get(activeCardName);
 		tempPanel.repaint();
-                player.move();
+               // player.move();
 	}
 	
 	private void initDrawables () //CREATES DRAWABLES AND LOADS IMAGES
@@ -117,23 +117,26 @@ public class MainFrame extends JFrame
         
     private class CollisionManager extends Thread{
         private Player player = (Player) drawables.get(0);
-        int delay = 4;	
+        int delay = 8;
         @Override
         public void run() 
         {
-            if(player.checkTouch(gPanel.getPlatformHitbox()) == true)
-            {
-            	System.out.println ("IS FALLING");
-                player.fallDown();
-            }   
+            while (true){
+                if(player.checkTouch(gPanel.getPlatformHitbox()) == true)
+                {
+                	System.out.println ("IS FALLING");
+                        player.fallDown();
+                }   
+                player.move();
+                try 
+                {
+                    Thread.sleep(delay);
+                    System.out.println (" --- PAUSE IN COLLISION THREAD ---");
             
-            try 
-            {
-                Thread.sleep(delay);
-                System.out.println (" --- PAUSE IN COLLISION THREAD ---");
-            } catch (Exception e) 
-            {
-
+                }       catch (Exception e) {
+                    
+                }
+            
             }
         }
     }
